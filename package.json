@@ -1,0 +1,30 @@
+{
+  "name": "tealui",
+  "description": "轻量但完整的前端组件库",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/digojs/digo"
+  },
+  "author": {
+    "name": "xuld",
+    "email": "xuld@vip.qq.com"
+  },
+  "bugs": {
+    "url": "https://github.com/teal/TealUI/issues",
+    "email": "xuld@vip.qq.com"
+  },
+  "homepage": "https://github.com/teal/TealUI#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "node": ">=4.5.0"
+  },
+  "dependencies": {},
+  "optionalDependencies": {},
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "source-map-support": "^0.4.2",
+    "typescript": "^2.0.2"
+  },
+  "scripts": {}
+}
