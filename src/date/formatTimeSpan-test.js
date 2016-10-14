@@ -1,0 +1,18 @@
+assert.equal(date.formatTimeSpan(0), "<0.01ms");
+        assert.equal(date.formatTimeSpan(0.004), "<0.01ms");
+        assert.equal(date.formatTimeSpan(0.01), "0.01ms");
+        assert.equal(date.formatTimeSpan(0.1), "0.1ms");
+        assert.equal(date.formatTimeSpan(1), "1ms");
+        assert.equal(date.formatTimeSpan(10), "10ms");
+        assert.equal(date.formatTimeSpan(100), "100ms");
+        assert.equal(date.formatTimeSpan(1111), "1.11s");
+        assert.equal(date.formatTimeSpan(1110), "1.11s");
+        assert.equal(date.formatTimeSpan(1100), "1.1s");
+        assert.equal(date.formatTimeSpan(1000), "1s");
+        assert.equal(date.formatTimeSpan(10000), "10s");
+        assert.equal(date.formatTimeSpan(60000), "1min");
+        assert.equal(date.formatTimeSpan(120000), "2min");
+        assert.equal(date.formatTimeSpan(150000), "2.5min");
+        assert.equal(date.formatTimeSpan(200000), "3.33min");
+        assert.equal(date.formatTimeSpan(1500000), "25min");
+        assert.equal(date.formatTimeSpan(15000000), "250min");

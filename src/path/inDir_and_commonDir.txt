@@ -1,0 +1,105 @@
+
+/**
+ * 判断一个文件夹是否包含指定的路径。
+ * @param parent 要判断的文件夹路径。
+ * @param child 要判断的子文件或文件夹路径。
+ * @returns 如果包含返回 true，否则返回 false。
+ * @remark 提供的两个路径必须都是绝对路径或相对路径。
+ * @example inDir("/user/root", "/user/root/a") // true
+ * @example inDir("/user/a", "/user/ab") // false
+ */
+export function inDir(parent: string, child: string) {
+
+    // 如果两个路径属于不同级，则最上级就是公共路径。
+    if (parent.charCodeAt(0) === 46/*.*/ || child.charCodeAt(0) === 46/*.*/) {
+        const dotDotSlash1 = (/^(\.\.(?:\/|\\|$))+/.exec(parent) || [""])[0].replace(/[\/\\]$/, "");
+        const dotDotSlash2 = (/^(\.\.(?:\/|\\|$))+/.exec(child) || [""])[0].replace(/[\/\\]$/, "");
+        if (parent.length === 1) {
+            return dotDotSlash2.length === 0;
+        }
+        if (child.length === 1) {
+            return dotDotSlash1.length > 0 && /^[\/\\]?$/.test(parent.substr(dotDotSlash1.length));
+        }
+        if (dotDotSlash1.length !== dotDotSlash2.length) {
+            return dotDotSlash1.length > dotDotSlash2.length && /^[\/\\]?$/.test(parent.substr(dotDotSlash1.length));
+        }
+        if (/^[\/\\]?$/.test(parent.substr(dotDotSlash1.length))) {
+            return true;
+        }
+    }
+
+    if (np.sep === "\\") {
+        parent = parent.toLowerCase();
+        child = child.toLowerCase();
+    }
+
+    // 必须以指定路径开始。
+    if (!child.startsWith(parent)) {
+        return false;
+    }
+
+    if (parent === "/") {
+        return true;
+    }
+
+    // 被截断部分必须是分隔符。
+    const ch = child.charCodeAt(parent.length);
+    if (ch !== ch || ch === 47/*/*/ || ch === 92/*\*/) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * 获取两个路径中的公共文件夹。
+ * @param path1 要处理的第一个路径。
+ * @param path2 要处理的第二个路径。
+ * @return 返回公共文件夹路径。路径末尾不含分隔符。
+ * @remark 提供的两个路径必须都是绝对路径或相对路径。
+ */
+export function commonDir(path1: string, path2: string) {
+
+    // 如果两个路径属于不同级，则最上级就是公共路径。
+    let index = -1;
+    if (path1.charCodeAt(0) === 46/*.*/ || path2.charCodeAt(0) === 46/*.*/) {
+        const dotDotSlash1 = (/^(\.\.(?:\/|\\|$))+/.exec(path1) || [""])[0].replace(/[\/\\]$/, "");
+        const dotDotSlash2 = (/^(\.\.(?:\/|\\|$))+/.exec(path2) || [""])[0].replace(/[\/\\]$/, "");
+        if (path1.length === 1) {
+            return dotDotSlash2 || ".";
+        }
+        if (path2.length === 1) {
+            return dotDotSlash1 || ".";
+        }
+        if (dotDotSlash1.length !== dotDotSlash2.length) {
+            return dotDotSlash1.length > dotDotSlash2.length ? dotDotSlash1 : dotDotSlash2;
+        }
+        index = dotDotSlash1.length;
+    }
+
+    // 计算相同的开头部分，以分隔符为界。
+    const ignoreCase = np.sep === "\\";
+    for (let i = index > 0 ? index : 0; i < path1.length && i < path2.length; i++) {
+        let ch1 = path1.charCodeAt(i);
+        let ch2 = path2.charCodeAt(i);
+
+        // 不区分大小写。
+        if (ignoreCase) {
+            if (ch1 >= 65/*A*/ && ch1 <= 90/*Z*/) ch1 |= 0x20;
+            if (ch2 >= 65/*A*/ && ch2 <= 90/*Z*/) ch2 |= 0x20;
+        }
+
+        // 发现不同字符后终止。
+        if (ch1 !== ch2) {
+            break;
+        }
+
+        // 如果发现一个分隔符，则之前的内容认为是公共头。
+        if (ch1 === 47/*/*/ || ch1 === 92/*\*/) {
+            index = i;
+        }
+
+    }
+
+    return index > 0 ? path1.substr(0, index) : index === 0 ? path1.charAt(0) : ".";
+}

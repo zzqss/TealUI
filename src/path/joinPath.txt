@@ -1,0 +1,19 @@
+
+/**
+ * 合并两个路径。
+ * @param path1 要合并的第一个路径。
+ * @param path2 要合并的第二个路径。
+ * @returns 返回合并后的路径。路径以 `/` 作为分隔符。
+ */
+export function joinPath(path1: string, path2: string) {
+    path1 = np.join(path1, path2);
+    if (np.sep == "\\") path1 = path1.replace(/\\/g, "/");
+    return path1;
+}
+
+    it('joinPath', () => {
+        assert.equal(path.joinPath("foo", "goo"), "foo/goo");
+        assert.equal(path.joinPath("foo/", "goo"), "foo/goo");
+        assert.equal(path.joinPath(".", "foo"), "foo");
+        assert.equal(path.joinPath("..", "foo"), "../foo");
+    });

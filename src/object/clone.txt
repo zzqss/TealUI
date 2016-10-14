@@ -1,0 +1,43 @@
+
+/**
+ * 深拷贝一个对象，拷贝的对象和原对象无引用关系。
+ * @param {Object} obj 要复制的对象。
+ * @returns {Object} 返回新对象。
+ * @remark
+ * > #### !不拷贝函数
+ * > 考虑项目实际需求和性能，`Object.clone` 不拷贝函数，因此拷贝的对象成员函数将保持引用关系。
+ * @example
+ * Object.clone({a: 3, b: [5]}) // {a: 3, b: [5]}
+ */
+Object.clone = function (obj, cloned, result) {
+    if (obj && typeof obj === 'object') {
+		if (obj instanceof Date) {
+            obj = new Date(+obj);
+        } else if (obj instanceof RegExp) {
+            obj = new RegExp(obj);
+		} else {
+			cloned = cloned || [];
+			result = result || [];
+			var p = cloned.indexOf(obj);
+			if (p >= 0){
+				return result[p];
+			}
+			cloned.push(obj);
+			if (obj instanceof Array) {
+				var newObj = [];
+				result.push(newObj);
+				for (var i = 0; i < obj.length; i++) {
+					newObj[i] = Object.clone(obj[i], cloned, result);
+				}
+			} else {
+				var newObj = {};
+				result.push(newObj);
+				for (var i in obj) {
+					newObj[i] = Object.clone(obj[i], cloned, result);
+				}
+			}
+			obj = newObj;
+		}
+    }
+    return obj;
+};

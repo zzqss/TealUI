@@ -1,0 +1,38 @@
+{
+    "version": "0.1.0",
+    "linux": {
+        "command": "sh",
+        "args": [
+            "-c"
+        ]
+    },
+    "osx": {
+        "command": "sh",
+        "args": [
+            "-c"
+        ]
+    },
+    "windows": {
+        "command": "cmd",
+        "args": [
+            "/C"
+        ]
+    },
+    "tasks": [
+        {
+            "taskName": "tsc -p tsconfig.json & qunit build/**/*-test.js",
+            "isBuildCommand": true,
+            "problemMatcher": "$tsc"
+        },
+        {
+            "taskName": "tsc -p tsconfig.json -w",
+            "isWatching": true,
+            "problemMatcher": "$tsc"
+        },
+        {
+            "taskName": "mocha build/test/**/*.js",
+            "isTestCommand": true,
+            "problemMatcher": "$tsc"
+        }
+    ]
+}
